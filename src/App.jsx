@@ -1,13 +1,7 @@
 import { RecoilRoot, useRecoilValue } from 'recoil';
 
-import {
-  jobsAtom,
-  messagingAtom,
-  networkAtom,
-  totalNotificationSelector,
-} from './atom';
+import { notificationsAtom, totalNotificationSelector } from './atom';
 import './App.css';
-import { useMemo } from 'react';
 
 function App() {
   return (
@@ -18,9 +12,7 @@ function App() {
 }
 
 function MainApp() {
-  const networkNotifications = useRecoilValue(networkAtom);
-  const jobsNotifications = useRecoilValue(jobsAtom);
-  const messagingNotification = useRecoilValue(messagingAtom);
+  const networkNotifications = useRecoilValue(notificationsAtom);
   const totalNotifications = useRecoilValue(totalNotificationSelector);
 
   const getNotificationsMesage = (number) => {
@@ -32,10 +24,12 @@ function MainApp() {
   return (
     <RecoilRoot>
       <button>Home</button>
-      <button>My network {getNotificationsMesage(networkNotifications)}</button>
-      <button>Jobs {getNotificationsMesage(jobsNotifications)}</button>
       <button>
-        Messagging {getNotificationsMesage(messagingNotification)}
+        My network {getNotificationsMesage(networkNotifications.network)}
+      </button>
+      <button>Jobs {getNotificationsMesage(networkNotifications.jobs)}</button>
+      <button>
+        Messagging {getNotificationsMesage(networkNotifications.messaging)}
       </button>
       <button>Total Notification {totalNotifications}</button>
     </RecoilRoot>
