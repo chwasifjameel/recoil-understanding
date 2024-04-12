@@ -1,12 +1,21 @@
-import { RecoilRoot, useRecoilValue } from 'recoil';
-
-import { notificationsAtom, totalNotificationSelector } from './atom';
+import { RecoilRoot, useRecoilValue, useRecoilState } from 'recoil';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import {
+  notificationsAtom,
+  totalNotificationSelector,
+  todosAtomFamily,
+} from './atom';
 import './App.css';
 
 function App() {
   return (
     <RecoilRoot>
-      <MainApp />
+      <Router>
+        <Routes>
+          <Route path="/" element={<MainApp />} />
+          <Route path="/todo" element={<TodoApp />} />
+        </Routes>
+      </Router>
     </RecoilRoot>
   );
 }
@@ -22,7 +31,7 @@ function MainApp() {
   };
 
   return (
-    <RecoilRoot>
+    <>
       <button>Home</button>
       <button>
         My network {getNotificationsMesage(networkNotifications.network)}
@@ -32,8 +41,28 @@ function MainApp() {
         Messagging {getNotificationsMesage(networkNotifications.messaging)}
       </button>
       <button>Total Notification {totalNotifications}</button>
-    </RecoilRoot>
+    </>
   );
 }
 
+function TodoApp() {
+  return (
+    <>
+      <Todo id={1} />
+      <Todo id={2} />
+    </>
+  );
+}
 export default App;
+
+function Todo({ id }) {
+  const [todo, setTodo] = useRecoilState(todosAtomFamily(id));
+
+  return (
+    <>
+      {todo.title}
+      {todo.description}
+      <br />
+    </>
+  );
+}
