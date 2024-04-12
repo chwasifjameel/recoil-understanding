@@ -56,7 +56,7 @@ function TodoApp() {
 export default App;
 
 function Todo({ id }) {
-  const [todo, setTodo] = useRecoilState(todosAtomFamily(id));
+  const [todo] = useRecoilState(todosAtomFamily(id));
 
   return (
     <>

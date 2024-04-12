@@ -1,6 +1,6 @@
-import { atom, selector, atomFamily } from 'recoil';
+import { atom, selector, atomFamily, selectorFamily } from 'recoil';
 
-import { getNotifications } from './service';
+import { getNotifications, getTodosById } from './service';
 
 export const notificationsAtom = atom({
   key: 'notifications',
@@ -23,9 +23,13 @@ export const totalNotificationSelector = selector({
 
 export const todosAtomFamily = atomFamily({
   key: 'todosAtomFamily',
-  default: (id) => {
-    return TODOS.find((todo) => todo.id === id);
-  },
+  default: selectorFamily({
+    key: 'todosAtomFamily/default',
+    get: (id) => async () => {
+      const { todo } = await getTodosById(id);
+      return todo;
+    },
+  }),
 });
 
 export const todoAtom = atom({
